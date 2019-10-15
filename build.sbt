@@ -1,8 +1,8 @@
-name := "rummikub"
+name := "rummikub_web"
  
 version := "1.0" 
       
-lazy val `rummikub` = (project in file(".")).enablePlugins(PlayScala)
+lazy val `rummikub_web` = (project in file(".")).enablePlugins(PlayScala)
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
       

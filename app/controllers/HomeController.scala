@@ -1,5 +1,6 @@
 package controllers
 
+import de.htwg.se.rummi.aview.Tui
 import javax.inject._
 import play.api.mvc._
 
@@ -10,14 +11,13 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  /**
-   * Create an Action to render an HTML page with a welcome message.
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
+  val controller = new de.htwg.se.rummi.controller.Controller("p1" :: "p2" :: Nil)
+  controller.initGame()
+
+  val tui = new Tui(controller)
+
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(tui.gridToHtmlString).as("text/html")
   }
 
 }
