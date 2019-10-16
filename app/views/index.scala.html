@@ -16,6 +16,9 @@
 
 @main("Rummikub") {
 
+    <style>
+        .GREEN
+    </style>
 
     <h1>Rummikub</h1>
     <p>
@@ -24,13 +27,17 @@
         Julian Riegraf
     </p>
     <table border="1|0">
-    @for(row <- 1 until fieldRows) {
+    @for(row <- 1 to fieldRows) {
         <tr>
-            @for(col <- 1 until fieldCols) {
+            @for(col <- 1 to fieldCols) {
             <td class="@{row.toString + "_" + col.toString}">
-        @{if(controller.field.getTileAt(row, col).isDefined) {
-            controller.field.getTileAt(row, col).get.number
-        }else "_"}</td>
+            @{
+                controller.field.getTileAt(row, col) match {
+                    case Some(t) => t.number
+                    case None => "_"
+                }
+            }
+        </td>
         }
         </tr>
     }
@@ -38,18 +45,40 @@
 
     <hr>
 
-    <table border="1|0">
-    @for(row <- 1 until rackRows) {
+    <table border="1">
+    @for(row <- 1 to rackRows) {
         <tr>
-        @for(col <- 1 until rackCols) {
-            <td class="@{row.toString + "_" + col.toString}">
-                @{
-                if(controller.rackOfActivePlayer.getTileAt(row, col).isDefined) {
-                    controller.rackOfActivePlayer.getTileAt(row, col).get.number
-                }
-            }</td>
+        @for(col <- 1 to rackCols) {
+            <td id="@{row.toString + "_" + col.toString}" style="color: @{controller.rackOfActivePlayer.getTileAt(row, col) match {
+                case Some(t) => t.color
+                case None => "black"
+            }
+            }">
+        @{controller.rackOfActivePlayer.getTileAt(row, col) match {
+            case Some(t) => t.number
+            case None => "_"
+        }
+        }
+            </td>
         }
         </tr>
     }
     </table>
+
+    <form action="input/sort">
+        <button>Sort</button>
+    </form>
+
+    <form action="input/draw">
+        <button>Draw</button>
+    </form>
+
+    <form action="input/finish">
+        <button>Finish</button>
+    </form>
+
+    <form action="input/finish">
+        <input type="text"></input>
+        <input type="submit">
+    </form>
 }

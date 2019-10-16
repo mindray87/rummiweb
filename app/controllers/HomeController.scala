@@ -26,7 +26,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     val c = command.replace("-%3E", "->")
     tui.processInputLine(c)
     println(c)
-    Ok(tui.gridToHtmlString).as("text/html")
+    Redirect("/game")
   }
 
   def game = Action {
