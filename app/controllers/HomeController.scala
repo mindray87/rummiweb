@@ -1,5 +1,6 @@
 package controllers
 
+
 import de.htwg.se.rummi.aview.Tui
 import javax.inject._
 import play.api.mvc._
@@ -17,6 +18,13 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   val tui = new Tui(controller)
 
   def index = Action {
+    Ok(tui.gridToHtmlString).as("text/html")
+  }
+
+  def input(command: String) = Action {
+    val c = command.replace("-%3E", "->")
+    tui.processInputLine(c)
+    println(c)
     Ok(tui.gridToHtmlString).as("text/html")
   }
 
