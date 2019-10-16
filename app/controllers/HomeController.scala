@@ -2,6 +2,7 @@ package controllers
 
 
 import de.htwg.se.rummi.aview.Tui
+import de.htwg.se.rummi.Const
 import javax.inject._
 import play.api.mvc._
 
@@ -26,6 +27,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     tui.processInputLine(c)
     println(c)
     Ok(tui.gridToHtmlString).as("text/html")
+  }
+
+  def game = Action {
+    Ok(views.html.index(controller))
   }
 
 }

@@ -1,20 +1,55 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+@(controller: de.htwg.se.rummi.controller.Controller)
 
-@*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
-@main("Welcome to Play") {
+@fieldRows = @{
+    8
+}
+@fieldCols = @{
+    13
+}
 
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @welcome(message, style = "scala")
+@rackRows = @{
+    4
+}
+@rackCols = @{
+    13
+}
 
+@main("Rummikub") {
+
+
+    <h1>Rummikub</h1>
+    <p>
+        by Kira Koch
+        &
+        Julian Riegraf
+    </p>
+    <table border="1|0">
+    @for(row <- 1 until fieldRows) {
+        <tr>
+            @for(col <- 1 until fieldCols) {
+            <td class="@{row.toString + "_" + col.toString}">
+        @{if(controller.field.getTileAt(row, col).isDefined) {
+            controller.field.getTileAt(row, col).get.number
+        }else "_"}</td>
+        }
+        </tr>
+    }
+    </table>
+
+    <hr>
+
+    <table border="1|0">
+    @for(row <- 1 until rackRows) {
+        <tr>
+        @for(col <- 1 until rackCols) {
+            <td class="@{row.toString + "_" + col.toString}">
+                @{
+                if(controller.rackOfActivePlayer.getTileAt(row, col).isDefined) {
+                    controller.rackOfActivePlayer.getTileAt(row, col).get.number
+                }
+            }</td>
+        }
+        </tr>
+    }
+    </table>
 }
