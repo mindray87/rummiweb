@@ -1,84 +1,48 @@
 @(controller: de.htwg.se.rummi.controller.Controller)
 
-@fieldRows = @{
-    8
-}
-@fieldCols = @{
-    13
-}
+@fieldRows = @{8}
+@fieldCols = @{13}
 
-@rackRows = @{
-    4
-}
-@rackCols = @{
-    13
-}
+@rackRows = @{4}
+@rackCols = @{13}
 
 @main("Rummikub") {
 
-    <style>
-        .GREEN
-    </style>
-
     <h1>Rummikub</h1>
-    <p>
-        by Kira Koch
-        &
-        Julian Riegraf
-    </p>
+
     <table border="1|0">
-    @for(row <- 1 to fieldRows) {
-        <tr>
-            @for(col <- 1 to fieldCols) {
-            <td class="@{row.toString + "_" + col.toString}">
-            @{
-                controller.field.getTileAt(row, col) match {
-                    case Some(t) => t.number
-                    case None => "_"
+        @for(row <- 1 to fieldRows) {
+            <tr>
+                @for(col <- 1 to fieldCols) {
+                    <td>
+                        @{
+                            controller.field.getTileAt(row, col) match {
+                                case Some(t) => t.number
+                                case None => "_"
+                            }
+                        }
+                    </td>
                 }
-            }
-        </td>
+            </tr>
         }
-        </tr>
-    }
     </table>
 
     <hr>
 
-    <table border="1">
-    @for(row <- 1 to rackRows) {
+    <table border="1|0">
+    @for(row <- 1 to fieldRows) {
         <tr>
-        @for(col <- 1 to rackCols) {
-            <td id="@{row.toString + "_" + col.toString}" style="color: @{controller.rackOfActivePlayer.getTileAt(row, col) match {
-                case Some(t) => t.color
-                case None => "black"
+        @for(col <- 1 to fieldCols) {
+            <td>
+            @{
+                controller.rackOfActivePlayer.getTileAt(row, col) match {
+                    case Some(t) => t.number
+                    case None => "_"
+                }
             }
-            }">
-        @{controller.rackOfActivePlayer.getTileAt(row, col) match {
-            case Some(t) => t.number
-            case None => "_"
-        }
-        }
             </td>
         }
         </tr>
     }
     </table>
-
-    <form action="input/sort">
-        <button>Sort</button>
-    </form>
-
-    <form action="input/draw">
-        <button>Draw</button>
-    </form>
-
-    <form action="input/finish">
-        <button>Finish</button>
-    </form>
-
-    <form action="input/finish">
-        <input type="text"></input>
-        <input type="submit">
-    </form>
 }
