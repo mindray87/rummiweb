@@ -8,41 +8,43 @@
 
 @main("Rummikub") {
 
-    <h1>Rummikub</h1>
+    <div class="gamecontainer">
 
-    <table border="1|0">
-        @for(row <- 1 to fieldRows) {
-            <tr>
-                @for(col <- 1 to fieldCols) {
-                    <td>
-                        @{
-                            controller.field.getTileAt(row, col) match {
-                                case Some(t) => t.number
-                                case None => "_"
-                            }
+        <div class="game">
+            <h1>Rummikub</h1>
+            <div class="grid">
+                @for(row <- 1 to fieldRows) {
+                    <div class="row">
+                        @for(col <- 1 to fieldCols) {
+                            <span class="cell">
+                                @{
+                                    controller.field.getTileAt(row, col) match {
+                                        case Some(t) => t.number
+                                        case None => "_"
+                                    }
+                                }
+                            </span>
                         }
-                    </td>
+                    </div>
                 }
-            </tr>
-        }
-    </table>
+            </div>
 
-    <hr>
-
-    <table border="1|0">
-    @for(row <- 1 to fieldRows) {
-        <tr>
-        @for(col <- 1 to fieldCols) {
-            <td>
-            @{
-                controller.rackOfActivePlayer.getTileAt(row, col) match {
-                    case Some(t) => t.number
-                    case None => "_"
+            <div class="grid">
+            @for(row <- 1 to fieldRows) {
+                <div class="row">
+                @for(col <- 1 to fieldCols) {
+                    <span class="cell">
+                    @{
+                        controller.rackOfActivePlayer.getTileAt(row, col) match {
+                            case Some(t) => t.number
+                            case None => "_"
+                        }
+                    }
+                    </span>
                 }
+                </div>
             }
-            </td>
-        }
-        </tr>
-    }
-    </table>
+            </div>
+        </div>
+    </div>
 }
