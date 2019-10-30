@@ -1,3 +1,4 @@
+@import scala.collection.convert.ImplicitConversionsToJava.`seq AsJavaList`
 @(controller: de.htwg.se.rummi.controller.Controller)
 
 @fieldRows = @{8}
@@ -6,45 +7,100 @@
 @rackRows = @{4}
 @rackCols = @{13}
 
+@letter = @{'A' to 'Z'}
+
+
 @main("Rummikub") {
 
     <div class="gamecontainer">
-
+        <div class="gameactions">
+         <span>Player @{controller.activePlayer.name}</span> ist playing right now.
+        </div>
         <div class="game">
-            <h1>Rummikub</h1>
+            <h1 class="header1">Rummikub</h1>
             <div class="grid">
-                @for(row <- 1 to fieldRows) {
+                @for(row <- 0 to fieldRows) {
                     <div class="row">
-                        @for(col <- 1 to fieldCols) {
-                            <span class="cell">
+                        @for(col <- 0 to fieldCols) {
+                            @if(col == 0) {
+                                <span class="headercell">@{row}</span>
+                            } else if(row == 0){
+                                <span class="headercell">@{letter.get(col-1)}</span>
+                            } else {
+                                <span class="cell"  style="color: @{controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                    case Some(t) => t.color
+                                    case None => "black"
+                                    }
+                                }">
+                                }
                                 @{
                                     controller.field.getTileAt(row, col) match {
                                         case Some(t) => t.number
-                                        case None => "_"
+                                        case None => " "
                                     }
                                 }
                             </span>
                         }
                     </div>
                 }
-            </div>
+            </div><br/>
 
             <div class="grid">
-            @for(row <- 1 to fieldRows) {
+            @for(row <- 1 to rackRows) {
                 <div class="row">
-                @for(col <- 1 to fieldCols) {
-                    <span class="cell">
-                    @{
-                        controller.rackOfActivePlayer.getTileAt(row, col) match {
-                            case Some(t) => t.number
-                            case None => "_"
+                @for(col <- 0 to rackCols) {
+                    @if(col == 0) {
+                        <span class="headercell">@{row+8}</span>
+                    } else {
+                        <span class="cell" style="color: @{
+                            controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                case Some(t) => t.color
+                                case None => "black"
+                            }
+                        }">
+                        @{
+                            controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                case Some(t) => t.number
+                                case None => " "
+                            }
                         }
+                        </span>
                     }
-                    </span>
                 }
                 </div>
             }
+
             </div>
+        </div>
+        <div class="gameactions">
+            <form action="input/sort">
+                <button class="actionbutton">Sort</button>
+            </form>
+            <br/>
+
+            <form action="input/draw">
+                <button class="actionbutton">Draw</button>
+            </form>
+            <br/>
+
+            <form action="input/finish">
+                <button class="actionbutton">Finish round</button>
+            </form>
+            <br/>
+
+            <form action="input/finish">
+                <select id="select1">
+                    <option value="s1">A9</option>
+                    <option value="s2">B9</option>
+                </select>
+                <lable>to</lable>
+                <select id="select2">
+                    <option value="d1">A1</option>
+                    <option value="d2">A2</option>
+                </select>
+                <br/>
+                <input type="submit" class="actionbutton">
+            </form>
         </div>
     </div>
 }
