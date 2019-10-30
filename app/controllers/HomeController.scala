@@ -16,6 +16,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   val controller = new de.htwg.se.rummi.controller.Controller("p1" :: "p2" :: Nil)
   controller.initGame()
 
+  var selectedField : String = ""
   val tui = new Tui(controller)
 
   def index = Action {
@@ -26,7 +27,27 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     val c = command.replace("-%3E", "->")
     tui.processInputLine(c)
     println(c)
-    Redirect("/game")
+    println("isValidField: " + controller.isValidField)
+    Redirect("/")
+  }
+
+  def select(field: String) = Action {
+
+    if (selectedField.isEmpty) {
+      selectedField = field
+      println("set selectedField")
+    } else if (selectedField == field){
+      selectedField = ""
+      println("reset selectedField")
+    } else {
+      val sf = selectedField.split("\\*")
+      val c = field.split("\\*")
+      val a = ('A' to ('A' + Const.GRID_COLS - 1).toChar).toList
+      selectedField = ""
+      println("redirect to /input/" + a(sf(1).toInt - 1) + sf(0) + "->" + a(c(1).toInt - 1) + c(0))
+      tui.processInputLine(a(sf(1).toInt - 1) + sf(0) + "->" + a(c(1).toInt - 1) + c(0))
+    }
+    Redirect("/")
   }
 
   def game = Action {
