@@ -9,60 +9,46 @@
 
 @letter = @{'A' to 'M'}
 
-
 @main("Rummikub") {
 
-        <div class="gamecontainer">
-            <div class="gameactions">
-             <span class="alert alert-primary">Player @{controller.activePlayer.name} ist playing right now.</span>
-            </div>
-            <div class="game">
-                <h1 class="header1">Rummikub</h1>
-                <div class="grid">
-                    <div class="row">
-                        <span class="btn cell">_</span>
-                        @for(l <- letter) {
-                            <span class="btn cell">@{l}</span>
-                        }
-                    </div>
-                    @for(row <- 1 to fieldRows) {
-                        <div class="row">
-                            <span class="btn cell">@{row}</span>
-                            @for(col <- 1 to fieldCols) {
-                              <a class="btn btn-outline-primary cell" href="/select/@{row}*@{col}"  style="color:
-                                        @{controller.field.getTileAt(row, col) match {
-                                            case Some(t) => t.color
-                                            case None => "black"
-                                            }
-                                        }"
-                                    >
-                                    @{
-                                        controller.field.getTileAt(row, col) match {
-                                            case Some(t) => if(t.joker){"J"} else {t.number}
-                                            case None => " "
-                                        }
-                                    }
-                                </a>
-                            }
-                        </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Rummikub</a>
+        <ul class="nav" nav-pills>
+            <li class="nav-item">
+                <a class="nav-link active" href="/">Game</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rules">Rules</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="gamecontainer">
+        <div class="gameactions">
+         <span class="alert alert-primary">Player @{controller.activePlayer.name} ist playing right now.</span>
+        </div>
+        <div class="game">
+            <h1 class="header1">Rummikub<small class="text-muted"> by Julian Riegraf & Kira Koch</small></h1>
+            <div class="grid">
+                <div class="row">
+                    <span class="btn cell">_</span>
+                    @for(l <- letter) {
+                        <span class="btn cell">@{l}</span>
                     }
-                </div><br/>
-
-
-                <div class="grid">
-                @for(row <- 1 to rackRows) {
+                </div>
+                @for(row <- 1 to fieldRows) {
                     <div class="row">
-                        <div class="btn cell">@{row+8}</div>
-                    @for(col <- 1 to rackCols) {
-
-                            <a class="btn btn-outline-primary cell"  href="/select/@{row+8}*@{col}" style="color: @{
-                                    controller.rackOfActivePlayer.getTileAt(row, col) match {
+                        <span class="btn cell">@{row}</span>
+                        @for(col <- 1 to fieldCols) {
+                          <a class="btn btn-outline-primary cell" href="/select/@{row}*@{col}"  style="color:
+                                    @{controller.field.getTileAt(row, col) match {
                                         case Some(t) => t.color
                                         case None => "black"
-                                    }
-                                }">
+                                        }
+                                    }"
+                                >
                                 @{
-                                    controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                    controller.field.getTileAt(row, col) match {
                                         case Some(t) => if(t.joker){"J"} else {t.number}
                                         case None => " "
                                     }
@@ -71,25 +57,46 @@
                         }
                     </div>
                 }
+            </div><br/>
+
+            <div class="grid">
+            @for(row <- 1 to rackRows) {
+                <div class="row">
+                    <div class="btn cell">@{row+8}</div>
+                @for(col <- 1 to rackCols) {
+
+                        <a class="btn btn-outline-primary cell"  href="/select/@{row+8}*@{col}" style="color: @{
+                                controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                    case Some(t) => t.color
+                                    case None => "black"
+                                }
+                            }">
+                            @{
+                                controller.rackOfActivePlayer.getTileAt(row, col) match {
+                                    case Some(t) => if(t.joker){"J"} else {t.number}
+                                    case None => " "
+                                }
+                            }
+                        </a>
+                    }
                 </div>
-            </div>
-            <div class="gameactions">
-                <form action="input/sort">
-                    <button class="btn btn-primary">Sort</button>
-                </form>
-                <br/>
-
-                <form action="input/draw">
-                    <button class="btn btn-primary">Draw</button>
-                </form>
-                <br/>
-
-                <form action="input/finish">
-                    <button class="btn btn-primary">Finish round</button>
-                </form>
-                <br/>
-
-
+            }
             </div>
         </div>
+        <div class="gameactions">
+            <form action="input/sort">
+                <button class="btn btn-primary">Sort</button>
+            </form>
+            <br/>
+
+            <form action="input/draw">
+                <button class="btn btn-primary">Draw</button>
+            </form>
+            <br/>
+
+            <form action="input/finish">
+                <button class="btn btn-primary">Finish round</button>
+            </form>
+        </div>
+    </div>
 }

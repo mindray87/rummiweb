@@ -15,8 +15,8 @@
   display:flex;
 }
 
-.header1 {
-  margin: 1em;
+.rulescontainer {
+  .container;
 }
 
 .game {
@@ -34,19 +34,6 @@
   flex: 1;
 }
 
-.actionbutton {
-  padding: 0.5em;
-  margin:0.1em;
-  width: auto;
-  border: 1px solid rebeccapurple;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  .hover {
-    background-color: darkblue;
-    color: white;
-  }
-}
-
 .clear {
   clear:both;
 }
@@ -58,26 +45,28 @@
   min-width: 400px;
 }
 
-.headercell {
+.cells {
   display: inline-block;
   float:left;
-  background-color: gray;
-  color:white;
-  width: 1.2em;
-  height: 1.2em;
   margin:0.1em;
   text-align: center;
 }
 
+.headercell {
+  .cells;
+  background-color: gray;
+  color:white;
+  width: 1.2em;
+  height: 1.2em;
+}
+
 .cell {
-  display: inline-block;
-  float:left;
+  .cells;
   background-color: lightgray;
   width: 2.7em;
   height: 2.7em;
-  margin:0.1em;
-  text-align: center;
 }
+
 .number {
   display:inline-block; /* switch to none if candidates should show*/
   width: 100%;
@@ -92,32 +81,4 @@
 }
 .highlighted {
   background-color:#C0FFC0;
-}
-
-.candidatecell {
-  display: inline-block; /* switch to inline-block if candidates should show*/
-  float:left;
-  font-size: 27.5%;
-  border-style: outset;
-  border-width: 0.125em;
-  width: 1.2em;
-  height: 1.2em;
-}
-
-.rulescontainer {
-  .container;
-}
-
-.rulestable{
-  width:100%;
-  padding: 5px;
-  overflow-x: auto;
-  th {
-    height: 50px;
-    border-bottom: 1px solid black;
-  }
-  td {
-    text-align: center;
-    border-bottom: 1px solid black;
-  }
 }

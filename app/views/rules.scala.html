@@ -2,11 +2,24 @@
 
 @main("Rummikub Rules") {
 
-    <div class="rulescontainer">
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Rummikub</a>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Game</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/rules">Rules</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div>
         <h1 class="testcolor">Rummikub Rules</h1>
 
-        <h3>Object of The Game</h3>
-        <p>
+
+        <p class="lead">
+            <h3>Object of The Game</h3>
             To be the first to place all tiles from the rack onto the table.
         </p>
 
@@ -31,7 +44,7 @@
                     are all of the same colour. For example: blue 3, 4, 5 and 6.
                 </li>
             </ul>
-            <b>Note:</b> number 1 is always played as the lowest number and may not follow number 13.
+            <u>Note:</u> number 1 is always played as the lowest number and may not follow number 13.
         </p>
 
         <h3>Playing The Game</h3>
@@ -81,44 +94,46 @@
         </p-->
         <p>
             <b>Example score table</b>
-            <table class="rulestable">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th scope="col">Player A</th>
+                        <th scope="col">Player B</th>
+                        <th scope="col">Player C</th>
+                        <th scope="col">Player D</th>
+                    </tr>
+                </thead>
                 <tr>
-                    <th></th>
-                    <th>Player A</th>
-                    <th>Player B</th>
-                    <th>Player C</th>
-                    <th>Player D</th>
-                </tr>
-                <tr>
-                    <td>Round 1</td>
+                    <th scope="row">Round 1</th>
                     <td>+ 24</td>
                     <td>- 5</td>
                     <td>- 16</td>
                     <td>- 3</td>
                 </tr>
                 <tr>
-                    <td>Round 2</td>
+                    <th scope="row">Round 2</th>
                     <td>- 6</td>
                     <td>- 11</td>
                     <td>+ 22</td>
                     <td>- 5</td>
                 </tr>
                 <tr>
-                    <td>Round 3</td>
+                    <th scope="row">Round 3</th>
                     <td>- 32</td>
                     <td>- 13</td>
                     <td>- 2</td>
                     <td>+ 47</td>
                 </tr>
                 <tr>
-                    <td>Round 4</td>
+                    <th scope="row">Round 4</th>
                     <td>+ 31</td>
                     <td>- 2</td>
                     <td>- 5</td>
                     <td>- 12</td>
                 </tr>
-                <tr>
-                    <td>Total</td>
+                <tr class="table-secondary">
+                    <th scope="row">Total</th>
                     <td>+ 17</td>
                     <td>- 31</td>
                     <td>- 1</td>
