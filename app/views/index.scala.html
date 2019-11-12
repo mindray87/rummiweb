@@ -26,6 +26,7 @@
     <div class="gamecontainer">
         <div class="gameactions">
          <span class="alert alert-primary">Player @{controller.activePlayer.name} ist playing right now.</span>
+         <span id="selected_tile_label" class="alert alert-primary">Selected Tile: </span>
         </div>
         <div class="game">
             <h1 class="header1">Rummikub<small class="text-muted"> by Julian Riegraf & Kira Koch</small></h1>
@@ -40,13 +41,12 @@
                     <div class="row">
                         <span class="btn cell">@{row}</span>
                         @for(col <- 1 to fieldCols) {
-                          <a class="btn btn-outline-primary cell" href="/select/@{row}*@{col}"  style="color:
+                          <a class="btn btn-outline-primary cell rummi_tile" href="/select/@{row}*@{col}"  style="color:
                                     @{controller.field.getTileAt(row, col) match {
                                         case Some(t) => t.color
                                         case None => "black"
                                         }
-                                    }"
-                                >
+                                    }">
                                 @{
                                     controller.field.getTileAt(row, col) match {
                                         case Some(t) => if(t.joker){"J"} else {t.number}
@@ -65,7 +65,7 @@
                     <div class="btn cell">@{row+8}</div>
                 @for(col <- 1 to rackCols) {
 
-                        <a class="btn btn-outline-primary cell"  href="/select/@{row+8}*@{col}" style="color: @{
+                        <a class="btn btn-outline-primary cell rummi_tile"  href="/select/@{row+8}*@{col}" style="color: @{
                                 controller.rackOfActivePlayer.getTileAt(row, col) match {
                                     case Some(t) => t.color
                                     case None => "black"
