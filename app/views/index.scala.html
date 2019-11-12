@@ -29,7 +29,7 @@
                 <span class="alert alert-primary">Player @{controller.activePlayer.name} ist playing right now.</span>
             </div>
             <div class="row">
-                <span id="selected_tile_label" class="alert alert-primary">Selected Tile: </span>
+                <span id="selected_tile_label" class="invisible alert alert-primary"></span>
             </div>
         </div>
         <div class="game">
@@ -45,7 +45,7 @@
                     <div class="row">
                         <span class="btn cell">@{row}</span>
                         @for(col <- 1 to fieldCols) {
-                          <div class="btn btn-outline-primary cell rummi_tile" href="/select/@{row}*@{col}"  style="color:
+                          <div class="btn btn-outline-primary cell rummi_tile" name="@{row}*@{col}"  style="color:
                                     @{controller.field.getTileAt(row, col) match {
                                         case Some(t) => t.color
                                         case None => "black"
@@ -69,7 +69,7 @@
                     <div class="btn cell">@{row+8}</div>
                 @for(col <- 1 to rackCols) {
 
-                        <div class="btn btn-outline-primary cell rummi_tile"  href="/select/@{row+8}*@{col}" style="color: @{
+                        <div class="btn btn-outline-primary cell rummi_tile"  name="@{row+8}*@{col}" style="color: @{
                                 controller.rackOfActivePlayer.getTileAt(row, col) match {
                                     case Some(t) => t.color
                                     case None => "black"

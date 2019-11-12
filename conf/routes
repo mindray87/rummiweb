@@ -6,7 +6,6 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.game
 GET     /input/*command             controllers.HomeController.input(command)
-GET     /select/*command             controllers.HomeController.select(command)
 GET     /rules                      controllers.HomeController.rules
 
 # An example controller showing how to use dependency injection
