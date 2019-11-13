@@ -1,4 +1,3 @@
-@import scala.collection.convert.ImplicitConversionsToJava.`seq AsJavaList`
 @(controller: de.htwg.se.rummi.controller.Controller)
 
 @fieldRows = @{8}
@@ -47,7 +46,7 @@
                         @for(col <- 1 to fieldCols) {
                           <div class="btn btn-outline-primary cell rummi_tile" name="@{row}*@{col}"  style="color:
                                     @{controller.field.getTileAt(row, col) match {
-                                        case Some(t) => t.color
+                                        case Some(t) => t.colour
                                         case None => "black"
                                         }
                                     }">
@@ -71,7 +70,7 @@
 
                         <div class="btn btn-outline-primary cell rummi_tile"  name="@{row+8}*@{col}" style="color: @{
                                 controller.rackOfActivePlayer.getTileAt(row, col) match {
-                                    case Some(t) => t.color
+                                    case Some(t) => t.colour
                                     case None => "black"
                                 }
                             }">
@@ -88,17 +87,17 @@
             </div>
         </div>
         <div class="gameactions">
-            <form action="input/sort">
+            <form action="command/sort">
                 <button class="btn btn-primary">Sort</button>
             </form>
             <br/>
 
-            <form action="input/draw">
+            <form action="command/draw">
                 <button class="btn btn-primary">Draw</button>
             </form>
             <br/>
 
-            <form action="input/finish">
+            <form action="command/finish">
                 <button class="btn btn-primary">Finish round</button>
             </form>
         </div>
