@@ -44,48 +44,24 @@
                     <div class="row">
                         <span class="btn cell">@{row}</span>
                         @for(col <- 1 to fieldCols) {
-                          <div class="btn btn-outline-primary cell rummi_tile" name="@{row}*@{col}"  style="color:
-                                    @{controller.field.getTileAt(row, col) match {
-                                        case Some(t) => t.colour
-                                        case None => "black"
-                                        }
-                                    }">
-                                @{
-                                    controller.field.getTileAt(row, col) match {
-                                        case Some(t) => if(t.joker){"J"} else {t.number}
-                                        case None => " "
-                                    }
-                                }
-                            </div>
+                          <div class="btn btn-outline-primary cell rummi_tile" id="@{row}*@{col}"></div>
                         }
                     </div>
                 }
             </div><br/>
 
             <div class="grid">
-            @for(row <- 1 to rackRows) {
-                <div class="row">
-                    <div class="btn cell">@{row+8}</div>
-                @for(col <- 1 to rackCols) {
-
-                        <div class="btn btn-outline-primary cell rummi_tile"  name="@{row+8}*@{col}" style="color: @{
-                                controller.rackOfActivePlayer.getTileAt(row, col) match {
-                                    case Some(t) => t.colour
-                                    case None => "black"
-                                }
-                            }">
-                            @{
-                                controller.rackOfActivePlayer.getTileAt(row, col) match {
-                                    case Some(t) => if(t.joker){"J"} else {t.number}
-                                    case None => " "
-                                }
-                            }
-                        </div>
-                    }
-                </div>
-            }
+                @for(row <- 1 to rackRows) {
+                    <div class="row">
+                        <div class="btn cell">@{row+8}</div>
+                        @for(col <- 1 to rackCols) {
+                                <div class="btn btn-outline-primary cell rummi_tile"  id="@{row+8}*@{col}"></div>
+                        }
+                    </div>
+                }
             </div>
         </div>
+
         <div class="gameactions">
             <form action="command/sort">
                 <button class="btn btn-primary">Sort</button>

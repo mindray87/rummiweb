@@ -1,18 +1,19 @@
 let selected_tile = null;
 let selected_tile_label = null;
-let tiles = null;
+
 
 $(document).ready(function () {
-  selected_tile_label = document.getElementById("selected_tile_label");
-  tiles = Array.from(document.getElementsByClassName("rummi_tile"));
-  tiles.forEach(function (item, index, array) {
-    item.setAttribute("onclick", "tile_on_click(this)")
+  selected_tile_label = $("#selected_tile_label");
+  $(".rummi_tile").each(function (index, item) {
+    $(item).attr("onclick", "tile_on_click(this)");
   });
+  loadJson();
 });
 
-function tile_on_click(tile) {
+function tile_on_click(t) {
+  let tile = $(t);
   if (selected_tile == null) {
-    if (!tile.textContent.trim() == "") {
+    if (!tile.text().trim() == "") {
       // String not empty or blank
       selected_tile = tile;
       showSelectedTile(tile);
@@ -22,13 +23,16 @@ function tile_on_click(tile) {
     invisibleSelectedTile()
   } else {
 
-    if (tile.textContent.trim() == "") {
-      let sf = selected_tile.getAttribute("name").split("*")
-      let c = tile.getAttribute("name").split("*")
-      let redirectTo = "/moveTile/" + getColLetter(sf[1]) + sf[0] + "->"
-          + getColLetter(c[1]) + c[0];
-      console.log("redirect to " + redirectTo);
-      window.location.replace(redirectTo);
+    if (tile.text().trim() == "") {
+      let sf = selected_tile.attr("id").split("*");
+      let c = tile.attr("id").split("*");
+      moveTile(getColLetter(sf[1]) + sf[0], getColLetter(c[1]) + c[0]);
+      console.log("moveTile" + getColLetter(sf[1]) + sf[0] + "->"
+          + getColLetter(c[1]) + c[0]);
+      selected_tile.html("");
+      loadJson();
+      selected_tile = null
+      invisibleSelectedTile()
     } else {
       selected_tile = tile;
       showSelectedTile(tile);
@@ -41,12 +45,59 @@ function getColLetter(col) {
 }
 
 function showSelectedTile(tile) {
-  let split = tile.getAttribute("name").split("*");
-  selected_tile_label.textContent = tile.textContent.trim() + " @ " +
-      getColLetter(split[1]) + split[0];
-  selected_tile_label.classList.remove("invisible")
+  let split = tile.attr("id").split("*");
+  selected_tile_label.text(tile.text().trim() + " @ " +
+      getColLetter(split[1]) + split[0]);
+  selected_tile_label.removeClass("invisible")
 }
 
 function invisibleSelectedTile(text) {
-  selected_tile_label.classList.add("invisible")
+  selected_tile_label.addClass("invisible")
+}
+
+function moveTile(from, to) {
+  $.get("/moveTile/" + from + "->" + to, function () {
+  })
+}
+
+function loadJson() {
+  $.ajax({
+    method: "GET",
+    url: "/json",
+    dataType: "json",
+
+    success: function (data) {
+      loadRack(data);
+      loadField(data);
+    }
+  });
+}
+
+function loadRack(json) {
+  activePlayer = json.players[json.activePlayerIndex].name;
+  let rack = json.racks.find(function (element) {
+    return element.player == activePlayer;
+  });
+
+  rack.grid.tiles.forEach(function (item) {
+    let x = item.x + 8;
+    let y = item.y;
+    let color = item.tile.color;
+    let tile = $("#" + x + "\\*" + y);
+    let span = '<span style="color: ' + color + '">' + item.tile.number
+        + '</span>';
+    tile.html(span);
+  });
+}
+
+function loadField(json) {
+  json.field.tiles.forEach(function (item) {
+    let x = item.x;
+    let y = item.y;
+    let color = item.tile.color;
+    let tile = $("#" + x + "\\*" + y);
+    let span = '<span style="color: ' + color + '">' + item.tile.number
+        + '</span>';
+    tile.html(span);
+  });
 }
