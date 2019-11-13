@@ -3,10 +3,27 @@ let selected_tile_label = null;
 
 
 $(document).ready(function () {
+
   selected_tile_label = $("#selected_tile_label");
-  $(".rummi_tile").each(function (index, item) {
-    $(item).attr("onclick", "tile_on_click(this)");
+
+  $("#sortBtn").click(function () {
+    command("sort");
   });
+
+  $("#finishBtn").click(function () {
+    command("finish");
+  });
+
+  $("#drawBtn").click(function () {
+    command("draw");
+  });
+
+  $(".rummi_tile").each(function (index, item) {
+    $(item).click(function () {
+      tile_on_click(this);
+    });
+  });
+
   loadJson();
 });
 
@@ -27,7 +44,7 @@ function tile_on_click(t) {
       let sf = selected_tile.attr("id").split("*");
       let c = tile.attr("id").split("*");
       moveTile(getColLetter(sf[1]) + sf[0], getColLetter(c[1]) + c[0]);
-      console.log("moveTile" + getColLetter(sf[1]) + sf[0] + "->"
+      console.log("moveTile " + getColLetter(sf[1]) + sf[0] + "->"
           + getColLetter(c[1]) + c[0]);
       selected_tile.html("");
       loadJson();
@@ -71,6 +88,15 @@ function loadJson() {
       loadField(data);
     }
   });
+}
+
+function command(command) {
+  $.ajax({
+    method: "GET",
+    url: "/command/" + command,
+    dataType: "json"
+  });
+  loadJson();
 }
 
 function loadRack(json) {
