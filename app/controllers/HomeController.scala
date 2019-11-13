@@ -19,15 +19,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   var selectedField : String = ""
   val tui = new Tui(controller)
 
-  def index = Action {
-    Ok(tui.gridToHtmlString).as("text/html")
-  }
-
   def input(command: String) = Action {
     val c = command.replace("-%3E", "->")
     tui.processInputLine(c)
     println(c)
-    println("isValidField: " + controller.isValidField)
     Redirect("/")
   }
 
@@ -38,5 +33,4 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   def rules = Action {
     Ok(views.html.rules())
   }
-
 }
