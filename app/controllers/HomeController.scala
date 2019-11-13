@@ -2,8 +2,8 @@ package controllers
 
 
 import de.htwg.se.rummi.aview.Tui
-import de.htwg.se.rummi.Const
 import javax.inject._
+import play.api.libs.json.Json
 import play.api.mvc._
 
 /**
@@ -16,14 +16,26 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   val controller = new de.htwg.se.rummi.controller.Controller("p1" :: "p2" :: Nil)
   controller.initGame()
 
-  var selectedField : String = ""
-  val tui = new Tui(controller)
-
-  def input(command: String) = Action {
-    val c = command.replace("-%3E", "->")
-    tui.processInputLine(c)
+  def moveTile(command: String) = Action {
+    val c = command.split("-%3E")
+    controller.moveTile(c(0), c(1))
     println(c)
     Redirect("/")
+  }
+
+  def command(command: String) = Action {
+    command match {
+      case "save" => controller.save()
+      case "sort" => controller.sortRack()
+      case "finish" => controller.switchPlayer()
+      case "draw" => controller.draw()
+      case _ => Results.NotFound
+    }
+    Redirect("/")
+  }
+
+  def json() = Action{
+    Ok(Json.parse(controller.save()))
   }
 
   def game = Action {
