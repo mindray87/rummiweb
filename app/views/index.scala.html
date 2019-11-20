@@ -1,105 +1,37 @@
-@(controller: de.htwg.se.rummi.controller.Controller)
+@*
+ * This template is called from the `index` template. This template
+ * handles the rendering of the page header and body tags. It takes
+ * two arguments, a `String` for the title of the page and an `Html`
+ * object to insert into the body of the page.
+ *@
+@(title: String)
 
-@fieldRows = @{8}
-@fieldCols = @{13}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>@title</title>
+        <meta charset="utf-8">
 
-@rackRows = @{4}
-@rackCols = @{13}
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
 
-@letter = @{'A' to 'M'}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-@main("Rummikub") {
-
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Rummikub</a>
-        <ul class="nav" nav-pills>
-            <li class="nav-item">
-                <a class="nav-link active" href="/">Game</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/rules">Rules</a>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="gamecontainer">
-        <div class="gameactions">
-            <div class="row">
-                <span class="alert alert-primary">Player @{controller.activePlayer.name} ist playing right now.</span>
-            </div>
-            <div class="row">
-                <span id="selected_tile_label" class="invisible alert alert-primary"></span>
-            </div>
-        </div>
-        <div class="game">
-            <h1 class="header1">Rummikub<small class="text-muted"> by Julian Riegraf & Kira Koch</small></h1>
-            <div class="grid">
-                <div class="row">
-                    <span class="btn cell">_</span>
-                    @for(l <- letter) {
-                        <span class="btn cell">@{l}</span>
-                    }
-                </div>
-                @for(row <- 1 to fieldRows) {
-                    <div class="row">
-                        <span class="btn cell">@{row}</span>
-                        @for(col <- 1 to fieldCols) {
-                          <div class="btn btn-outline-primary cell rummi_tile" name="@{row}*@{col}"  style="color:
-                                    @{controller.field.getTileAt(row, col) match {
-                                        case Some(t) => t.colour
-                                        case None => "black"
-                                        }
-                                    }">
-                                @{
-                                    controller.field.getTileAt(row, col) match {
-                                        case Some(t) => if(t.joker){"J"} else {t.number}
-                                        case None => " "
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                }
-            </div><br/>
-
-            <div class="grid">
-            @for(row <- 1 to rackRows) {
-                <div class="row">
-                    <div class="btn cell">@{row+8}</div>
-                @for(col <- 1 to rackCols) {
-
-                        <div class="btn btn-outline-primary cell rummi_tile"  name="@{row+8}*@{col}" style="color: @{
-                                controller.rackOfActivePlayer.getTileAt(row, col) match {
-                                    case Some(t) => t.colour
-                                    case None => "black"
-                                }
-                            }">
-                            @{
-                                controller.rackOfActivePlayer.getTileAt(row, col) match {
-                                    case Some(t) => if(t.joker){"J"} else {t.number}
-                                    case None => " "
-                                }
-                            }
-                        </div>
-                    }
-                </div>
-            }
-            </div>
-        </div>
-        <div class="gameactions">
-            <form action="command/sort">
-                <button class="btn btn-primary">Sort</button>
-            </form>
-            <br/>
-
-            <form action="command/draw">
-                <button class="btn btn-primary">Draw</button>
-            </form>
-            <br/>
-
-            <form action="command/finish">
-                <button class="btn btn-primary">Finish round</button>
-            </form>
-        </div>
-    </div>
-}
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="@routes.Assets.versioned("scripts/rummikub.js")"></script>
+    </head>
+    <body>
+        <div id="content"></div>
+    </body>
+</html>
