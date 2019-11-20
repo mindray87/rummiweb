@@ -1,15 +1,14 @@
 @()
 
-@main("Rummikub Rules") {
 
     <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Rummikub</a>
-        <ul class="nav nav-pills">
+        <h1 class="navbar-brand header1">Rummikub<small class="text-muted"> by Julian Riegraf & Kira Koch</small></h1>
+        <ul class="nav" nav-pills>
             <li class="nav-item">
-                <a class="nav-link" href="/">Game</a>
+                <button id="gameBtn" class="btn btn-secondary mr-2">Game</button>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="/rules">Rules</a>
+                <button id="rulesBtn" class="btn btn-secondary">Rules</button>
             </li>
         </ul>
     </nav>
@@ -199,4 +198,3 @@
             </div>
         </div>
     </div>
-}
