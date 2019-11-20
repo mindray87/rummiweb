@@ -1,10 +1,14 @@
 package controllers
 
 
-import de.htwg.se.rummi.aview.Tui
+import akka.actor._
+import de.htwg.se.rummi.controller._
 import javax.inject._
 import play.api.libs.json.Json
+import play.api.libs.streams.ActorFlow
 import play.api.mvc._
+
+import scala.swing.Reactor
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -34,7 +38,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Redirect("/")
   }
 
-  def json() = Action{
+  def json() = Action {
     Ok(Json.parse(controller.save()))
   }
 
@@ -44,5 +48,41 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def rules = Action {
     Ok(views.html.rules())
+  }
+
+  def socket = WebSocket.accept[String, String] { request =>
+      ActorFlow.actorRef { out =>
+        println("Connect receive")
+        RummikubWeSocketActorFactory.create(out)
+      }
+  }
+
+  object RummikubWeSocketActorFactory {
+    def create(out: ActorRef) = {
+      Props(new RummikubWebSocketActor(out))
+    }
+  }
+
+  class RummikubWebSocketActor(out: ActorRef) extends Actor with Reactor {
+    listenTo(controller)
+
+    def receive = {
+      case msg: String =>
+        out ! (controller.save())
+        println("Sent Json to Client" + msg)
+    }
+
+    reactions += {
+      case event: PlayerSwitchedEvent => sendJsonToClient
+      case event: ValidStateChangedEvent => sendJsonToClient
+      case event: FieldChangedEvent => sendJsonToClient
+      case event: GameStateChanged => sendJsonToClient
+      case event: WinEvent => sendJsonToClient
+    }
+
+    def sendJsonToClient = {
+      println("Received event from Controller")
+      out ! (controller.save())
+    }
   }
 }
