@@ -1,6 +1,7 @@
 package controllers
 
 import akka.actor._
+import akka.stream.Materializer
 import de.htwg.se.rummi.controller._
 import javax.inject._
 import play.api.libs.json.Json
@@ -14,7 +15,7 @@ import scala.swing.Reactor
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class HomeController @Inject()(cc: ControllerComponents) (implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
   val controller = new de.htwg.se.rummi.controller.Controller("Julian" :: "Kira" :: Nil)
   controller.initGame()
