@@ -4,6 +4,14 @@ let selected_tile_label = null;
 
 $(document).ready(function () {
 
+  $.get( "/game", function( data ) {
+    $('#content').html( data );
+    onload();
+    loadJson();
+  });
+});
+
+function onload() {
   selected_tile_label = $("#selected_tile_label");
 
   $("#sortBtn").click(function () {
@@ -24,8 +32,23 @@ $(document).ready(function () {
     });
   });
 
-  loadJson();
-});
+  $("#rulesBtn").click(function () {
+    console.log("Rules Btn clicked.");
+    $.get( "/rules", function( data ) {
+      $('#content').html( data );
+      onload();
+    });
+  });
+
+  $("#gameBtn").click(function () {
+    console.log("Game Btn clicked.");
+    $.get( "/game", function( data ) {
+      $('#content').html( data );
+      onload();
+      loadJson();
+    });
+  });
+}
 
 function tile_on_click(t) {
   let tile = $(t);
@@ -91,11 +114,10 @@ function loadJson() {
 }
 
 function command(command) {
-  $.ajax({
-    method: "GET",
-    url: "/command/" + command,
-    dataType: "json"
+  $(".rummi_tile").each(function (index, item) {
+    $(item).text("");
   });
+  $.get("/command/" + command);
   loadJson();
 }
 

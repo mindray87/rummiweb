@@ -39,7 +39,11 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def game = Action {
-    Ok(views.html.index(controller))
+    Ok(views.html.game(controller))
+  }
+
+  def main = Action {
+    Ok(views.html.index("Rummikub"))
   }
 
   def rules = Action {
