@@ -1,7 +1,5 @@
 package controllers
 
-
-import de.htwg.se.rummi.aview.Tui
 import javax.inject._
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -13,7 +11,7 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  val controller = new de.htwg.se.rummi.controller.Controller("p1" :: "p2" :: Nil)
+  val controller = new de.htwg.se.rummi.controller.Controller("Julian" :: "Kira" :: Nil)
   controller.initGame()
 
   def moveTile(command: String) = Action {
