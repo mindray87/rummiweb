@@ -1,29 +1,16 @@
 <template>
-    <div class="btn btn-outline-primary cell"
-         :id="id">
+    <div class="btn cell">{{this.$props.label}}
     </div>
 </template>
 
 <script>
     export default {
-        name: "TileElement",
-        props: ["id"]
+        name: "LabelItem",
+        props: ["label"]
     }
 </script>
 
 <style scoped>
-    .green {
-        color: green;
-    }
-
-    .red {
-        color: red;
-    }
-
-    .yellow {
-        color: yellow;
-    }
-
     .cell {
         display: inline-block;
         float: left;
@@ -34,4 +21,3 @@
         height: 2.7em;
     }
 </style>
-

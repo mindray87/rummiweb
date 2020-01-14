@@ -1,31 +1,29 @@
 <template>
     <div class="row">
-        <TileElement
-                v-for="tile in tiles"
-                v-bind:key="tile.id"
-                v-bind:number="tile.number"
-                v-bind:color="tile.color"
-        ></TileElement>
+        <LabelItem :label="this.$props.rowNumber" ></LabelItem>
+        <TileElement v-for="n in this.$props.cols"
+                     v-bind:id="String(n)"
+        />
     </div>
 </template>
 
 <script>
     import TileElement from './TileElement.vue';
+    import LabelItem from "./LabelItem";
 
     export default {
         name: "TileRow",
         components: {
+            LabelItem,
             TileElement
         },
-        data: function () {
-            return {
-                tiles: [
-                    {id: 1, number: 1, color: "green"},
-                    {id: 2, number: 2, color: "red"},
-                    {id: 3, number: 3, color: "yellow"}
-                ]
-            }
-        }
+        props: ["tiles", "cols", "rowNumber"]
+        /* gets this
+        [
+            { x: 1, y: 5, tile: { number: 1, color: 'GREEN', joker: false } },
+            { x: 1, y: 1, tile: { number: 1, color: 'WHITE', joker: true } },
+            ...
+        ]*/
     }
 </script>
 
