@@ -1,0 +1,15 @@
+{
+  "name": "Rummikub",
+  "short_name": "Rummikub",
+  "start_url": "index.html",
+  "display": "standalone",
+  "theme_color": "#0476F2",
+  "background_color": "#fff",
+  "icons": [
+    {
+      "src": "", // usually kept in the static/icons folder
+      "sizes": "", // enter the size of the image
+      "type": "" // enter the type of the image eg: image/png,
+    },
+  ]
+}

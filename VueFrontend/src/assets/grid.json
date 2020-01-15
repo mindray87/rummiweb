@@ -16,14 +16,14 @@
       "ROWS" : 4,
       "tiles" : [ {
         "x" : 1,
-        "y" : 5,
+        "y" : 13,
         "tile" : {
           "number" : 1,
           "color" : "GREEN",
           "joker" : false
         }
       }, {
-        "x" : 3,
+        "x" : 13,
         "y" : 4,
         "tile" : {
           "number" : 7,
@@ -80,7 +80,7 @@
         }
       }, {
         "x" : 1,
-        "y" : 3,
+        "y" : 13,
         "tile" : {
           "number" : 8,
           "color" : "BLUE",
@@ -151,7 +151,7 @@
         }
       }, {
         "x" : 3,
-        "y" : 1,
+        "y" : 13,
         "tile" : {
           "number" : 3,
           "color" : "YELLOW",

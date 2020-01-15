@@ -4,7 +4,8 @@
         <TileRow v-for="n in this.$props.grid.ROWS"
                  v-bind:row-number="n"
                  v-bind:cols="getColCount()"
-                 v-bind:tiles="getRows"
+                 v-bind:tiles="getRows()"
+                 :grid-name="name"
         />
     </div>
 </template>
@@ -16,7 +17,7 @@
     export default {
         name: "RummiGrid",
         components: {GridLabel, TileRow},
-        props: ["grid"],
+        props: ["grid", "name"],
         methods: {
             getColCount() {
                 return this.$props.grid.COLS

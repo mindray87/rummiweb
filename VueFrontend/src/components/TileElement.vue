@@ -1,27 +1,42 @@
 <template>
     <div class="btn btn-outline-primary cell"
-         :id="id">
+         v-bind:style="{color: tile.color}"
+         :class="{clicked:clicked}"
+         v-on:click="onClick"
+    >
+        {{tile.number}}
     </div>
 </template>
 
 <script>
     export default {
         name: "TileElement",
-        props: ["id"]
+        props: ["tile", "id"],
+        data: function () {
+            return {
+                clicked: false
+            }
+        },
+        methods: {
+            onClick() {
+                console.log(this.$data.clicked);
+                this.$emit('tile-clicked', this.$props.id);
+                this.$data.clicked = !this.$data.clicked;
+            },
+
+            deselect() {
+                this.$data.clicked = false;
+            }
+        }
     }
 </script>
 
 <style scoped>
-    .green {
-        color: green;
-    }
 
-    .red {
-        color: red;
-    }
-
-    .yellow {
-        color: yellow;
+    .clicked {
+        border-style: solid;
+        border-color: black;
+        border-width: 2px;
     }
 
     .cell {

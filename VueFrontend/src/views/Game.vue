@@ -6,9 +6,12 @@
                 <div class="col-md-8 mt-4">
                     <div class="game">
                         <LabelRow :cols="getField().COLS"></LabelRow>
-                        <RummiGrid :grid="getField()"></RummiGrid>
+                        <RummiGrid :grid="getField()"
+                                   :name="'field'"
+                        ></RummiGrid>
                         <div style="margin-bottom: 2em"></div>
-                        <RummiGrid :grid="getRack(getActivePlayer()).grid"></RummiGrid>
+                        <RummiGrid :grid="getRack(getActivePlayer()).grid"
+                                   :name="'rack'"></RummiGrid>
                     </div>
                 </div>
             </div>
