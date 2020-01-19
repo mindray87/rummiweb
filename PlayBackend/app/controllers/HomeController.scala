@@ -29,15 +29,15 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       case "draw" => controller.draw()
       case _ => Results.NotFound
     }
-    Redirect("/")
+    Redirect("/").enableCors
   }
 
   def json() = Action{
-    Ok(Json.parse(controller.save()))
+    Ok(Json.parse(controller.save())).enableCors
   }
 
   def game = Action {
-    Ok(views.html.game(controller))
+    Ok(views.html.game(controller)).enableCors
   }
 
   def main = Action {
@@ -46,5 +46,14 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def rules = Action {
     Ok(views.html.rules())
+  }
+
+  implicit class RichResult (result: Result) {
+    def enableCors =  result.withHeaders(
+      "Access-Control-Allow-Origin" -> "*"
+      , "Access-Control-Allow-Methods" -> "OPTIONS, GET, POST, PUT, DELETE, HEAD"   // OPTIONS for pre-flight
+      , "Access-Control-Allow-Headers" -> "Accept, Content-Type, Origin, X-Json, X-Prototype-Version, X-Requested-With" //, "X-My-NonStd-Option"
+      , "Access-Control-Allow-Credentials" -> "true"
+    )
   }
 }

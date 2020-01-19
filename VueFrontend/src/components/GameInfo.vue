@@ -6,7 +6,10 @@
 
         <div class="row">
             <div class="btn-group">
-                <button id="sortBtn" class="btn btn-primary">> Sort</button>
+                <button id="sortBtn" class="btn btn-primary"
+                        v-on:click="onClick"
+                >> Sort
+                </button>
                 <button id="drawBtn" class="btn btn-primary">> Draw</button>
                 <button id="finishBtn" class="btn btn-primary">> Finish</button>
             </div>
@@ -19,9 +22,19 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         name: "GameInfo",
-        props: ["currentPlayer"]
+        props: ["currentPlayer"],
+        methods: {
+            onClick() {
+                console.log("sort button clicked");
+                axios.get('http://localhost:9000/command/sort')
+                    .catch(err => console.log(err));
+                this.$emit('reload-json');
+            }
+        }
     }
 </script>
 

@@ -2,7 +2,8 @@
     <div id="home">
         <div class="container">
             <div class="row">
-                <GameInfo :current-player="getActivePlayer().name"></GameInfo>
+                <GameInfo :current-player="getActivePlayer().name"
+                v-on:reload-json="reloadJson"></GameInfo>
                 <div class="col-md-8 mt-4">
                     <div class="game">
                         <LabelRow :cols="getField().COLS"></LabelRow>
@@ -25,6 +26,7 @@
     import jsonFile from "../assets/grid";
     import GameInfo from "../components/GameInfo";
     import LabelRow from "../components/LabelRow";
+    import axios from 'axios';
 
     export default {
         name: 'Home',
@@ -50,8 +52,17 @@
                 return this.$data.json.racks.filter(function (el) {
                     return el.player === player.name;
                 })[0]
+            },
+            reloadJson(){
+                axios.get('http://localhost:9000/json')
+                    .then(res => this.json = res.data)
+                    .catch(err => console.log(err));
             }
+        },
+        created() {
+            this.reloadJson();
         }
+
     }
 </script>
 
