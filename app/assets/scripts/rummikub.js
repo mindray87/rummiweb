@@ -3,7 +3,7 @@ let selected_tile_label = null;
 
 
 $(document).ready(function () {
-
+  console.log("document ready!");
   $.get( "/game", function( data ) {
     $('#content').html( data );
     onload();
@@ -55,19 +55,20 @@ function onload() {
 }
 
 function tile_on_click(t) {
+  console.log(`tile clicked: ${$(t).attr("id")}`);
   let tile = $(t);
   if (selected_tile == null) {
-    if (!tile.text().trim() == "") {
+    if (!(tile.text().trim() === "")) {
       // String not empty or blank
       selected_tile = tile;
       showSelectedTile(tile);
     }
-  } else if (selected_tile == tile) {
+  } else if (selected_tile === tile) {
     selected_tile = null
     invisibleSelectedTile()
   } else {
 
-    if (tile.text().trim() == "") {
+    if (tile.text().trim() === "") {
       let sf = selected_tile.attr("id").split("*");
       let c = tile.attr("id").split("*");
       moveTile(getColLetter(sf[1]) + sf[0], getColLetter(c[1]) + c[0]);
@@ -75,7 +76,7 @@ function tile_on_click(t) {
           + getColLetter(c[1]) + c[0]);
       selected_tile.html("");
       loadJson();
-      selected_tile = null
+      selected_tile = null;
       invisibleSelectedTile()
     } else {
       selected_tile = tile;
@@ -114,6 +115,7 @@ function loadJson() {
       loadRack(data);
       loadField(data);
       getActivePlayer(data);
+      console.log("loaded json")
     }
   });
 }
@@ -126,14 +128,16 @@ function command(command) {
   $(".rummi_tile").each(function (index, item) {
     $(item).text("");
   });
+  console.log(`command: ${command}`);
   $.get("/command/" + command);
   loadJson();
 }
 
 function loadRack(json) {
-  activePlayer = json.players[json.activePlayerIndex].name;
+  console.log("loadRack");
+  let activePlayer = json.players[json.activePlayerIndex].name;
   let rack = json.racks.find(function (element) {
-    return element.player == activePlayer;
+    return element.player === activePlayer;
   });
 
   rack.grid.tiles.forEach(function (item) {
@@ -141,8 +145,7 @@ function loadRack(json) {
     let y = item.y;
     let color = item.tile.color;
     let tile = $("#" + x + "\\*" + y);
-    let span = '<span style="color: ' + color + '">' + item.tile.number
-        + '</span>';
+    let span = `<span style="color: ${color}">${item.tile.number}</span>`;
     tile.html(span);
   });
 }
@@ -153,8 +156,7 @@ function loadField(json) {
     let y = item.y;
     let color = item.tile.color;
     let tile = $("#" + x + "\\*" + y);
-    let span = '<span style="color: ' + color + '">' + item.tile.number
-        + '</span>';
+    let span = `<span style="color: ${color}">${item.tile.number}</span>`;
     tile.html(span);
   });
 }
