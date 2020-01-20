@@ -13,10 +13,10 @@ $(document).ready(function () {
 
 function onload() {
   selected_tile_label = $("#selected_tile_label");
-
-  $("#sortBtn").click(function () {
-    command("sort");
-  });
+  //
+  // $("#sortBtn").click(function () {
+  //   command("sort");
+  // });
 
   $("#finishBtn").click(function () {
     command("finish");

@@ -4,12 +4,23 @@ Vue.component('rummi-tile-element', {
          :id="id"
          :class="{ selected: selected }"
          v-on:click="select_tile"
-         > </div>
+         >{{getTile}}</div>
     `,
     props: ['id'],
     data: function () {
         return {
             selected: false
+        }
+    },
+    computed: {
+        getTile : function () {
+
+            let tile = store.getters.getTileById(this.id);
+            if (tile === undefined){
+                return " ";
+            }else {
+                return tile.tile.number;
+            }
         }
     },
     methods: {
@@ -66,14 +77,15 @@ Vue.component('rummi-label-row', {
 
 Vue.component('rummi-game-info', {
     template: `
+    <div class="game-info">
     <div class="col-md-4 mt-4">
         <div class="row">
-            <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">_</span> ist playing right now.</div>
+            <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">{{playerName}}</span> ist playing right now.</div>
         </div>
 
         <div class="row">
             <div class="btn-group">
-                <button id="sortBtn" class="btn btn-primary">> Sort</button>
+                <button v-on:click="command('sort')" id="sortBtn" class="btn btn-primary">> Sort</button>
                 <button id="drawBtn" class="btn btn-primary">> Draw</button>
                 <button id="finishBtn" class="btn btn-primary">> Finish</button>
             </div>
@@ -82,7 +94,23 @@ Vue.component('rummi-game-info', {
         <div class="row">
             <span id="selected_tile_label" class="invisible alert alert-primary mt-4"></span>
         </div>
-    </div>`
+    </div>
+</div>`,
+    computed: {
+        playerName: function () {
+            let player = this.$store.getters.activePlayer;
+            return player.name;
+        }
+    },
+    methods: {
+        command : function (command) {
+            console.log("command: " + command);
+            $.get("/command/" + command, function (data) {
+                store.dispatch('reload');
+            });
+
+        }
+    }
 });
 Vue.component('rummi-game', {
     template:
@@ -152,31 +180,21 @@ Vue.component('rummi-header', {
 Vue.component('rummi-app', {
 
 
-/*    template:
-        `<div>
-            <rummi-header></rummi-header>
-            <rummi-game></rummi-game>
-        </div>`*/
-
     template:
-        `<div>
-            <div v-if="isLoaded">{{getPlayer()}}</div>
-        </div>`,
-    data : function () {
-      return {
-          isLoaded: false
-      }
-    },
+        `<div v-if="loaded">
+                <rummi-header></rummi-header>
+                <rummi-game></rummi-game>
+            </div>`,
     computed: {
-        getPlayer () {
+        getPlayer: function () {
             return this.$store.getters.activePlayer;
         },
-        loaded(){
+        loaded: function () {
+            console.log("returning loading status: " + this.$store.getters.loaded);
             return this.$store.getters.loaded;
         }
     },
-    created () {
-        this.$store.dispatch('relaod');
+    created() {
+        this.$store.dispatch('load');
     }
-
 });

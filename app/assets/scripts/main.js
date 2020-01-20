@@ -8,7 +8,20 @@ const store = new Vuex.Store({
     },
     getters: {
         activePlayer: state => state.game.players[state.game.activePlayerIndex],
-        loaded: state => state.loaded
+        loaded: state => state.loaded,
+        getTileById: (state) => (id) => {
+            let idComp = id.split("*");
+            let col = idComp[0].charCodeAt(0) - 64;
+            let row = idComp[1];
+            if (row < 8){
+                // in field
+                return state.game.field.tiles.find(t => t.y == col && t.x == row);
+            } else {
+                // in grid
+                row = row - 8;
+                return state.game.racks[state.game.activePlayerIndex].grid.tiles.find(t => t.y == col && t.x == row);
+            }
+        }
 
     },
     mutations: {
@@ -25,13 +38,18 @@ const store = new Vuex.Store({
     },
 
     actions: {
-        relaod(state) {
-            state.commit('startLoading');
+        load(state) {
             console.log("store is reloading");
+            state.commit('startLoading');
+            $.get("/json", function (data) {
+                state.commit('getGameJson', data);
+                state.commit('stopLoading');
+            });
+        },
+        reload(state) {
             $.get("/json", function (data) {
                 state.commit('getGameJson', data);
             });
-            state.commit('stopLoading');
         }
     }
 
@@ -40,6 +58,7 @@ const store = new Vuex.Store({
 
 
 new Vue({
-    render: h => h('rummi-app'),
-    store
-}).$mount('#app')
+    el: '#app',
+    store,
+    template: '<rummi-app></rummi-app>'
+});
