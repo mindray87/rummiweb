@@ -1,9 +1,9 @@
 @*
- * This template is called from the `index` template. This template
- * handles the rendering of the page header and body tags. It takes
- * two arguments, a `String` for the title of the page and an `Html`
- * object to insert into the body of the page.
- *@
+* This template is called from the `index` template. This template
+* handles the rendering of the page header and body tags. It takes
+* two arguments, a `String` for the title of the page and an `Html`
+* object to insert into the body of the page.
+*@
 @(title: String)
 
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
         <title>@title</title>
         <meta charset="utf-8">
 
-        <!-- Bootstrap CSS -->
+            <!-- Bootstrap CSS -->
         <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -29,9 +29,15 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="@routes.Assets.versioned("scripts/rummikub.js")"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
     </head>
     <body>
-        <div id="content"></div>
+        <div id="app"></div>
     </body>
+
+    <script src="@routes.Assets.versioned("scripts/Components.js")"></script>
+    <script src="@routes.Assets.versioned("scripts/main.js")"></script>
+    <script src="@routes.Assets.versioned("scripts/rummikub.js")"></script>
 </html>

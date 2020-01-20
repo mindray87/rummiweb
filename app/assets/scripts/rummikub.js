@@ -48,6 +48,10 @@ function onload() {
       loadJson();
     });
   });
+
+  $("#playerInfo").click(function () {
+
+  });
 }
 
 function tile_on_click(t) {
@@ -109,8 +113,13 @@ function loadJson() {
     success: function (data) {
       loadRack(data);
       loadField(data);
+      getActivePlayer(data);
     }
   });
+}
+
+function getActivePlayer(json) {
+  $("#playerInfo").textContent = json.players[json.activePlayerIndex].name;
 }
 
 function command(command) {
