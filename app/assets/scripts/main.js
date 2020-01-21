@@ -4,11 +4,13 @@ Vue.config.productionTip = false;
 const store = new Vuex.Store({
     state: {
         game: {},
+        selectedTile: undefined,
         loaded: false
     },
     getters: {
         activePlayer: state => state.game.players[state.game.activePlayerIndex],
         loaded: state => state.loaded,
+        selectedTile: state => state.selectedTile,
         getTileById: (state) => (id) => {
             let idComp = id.split("*");
             let col = idComp[0].charCodeAt(0) - 64;
@@ -26,8 +28,8 @@ const store = new Vuex.Store({
     },
     mutations: {
         getGameJson(state, data) {
+            console.log("state.game updated.");
             state.game = data;
-            console.log(JSON.stringify(state));
         },
         startLoading(state){
             state.loaded = false;

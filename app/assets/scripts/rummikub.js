@@ -26,11 +26,11 @@ function onload() {
     command("draw");
   });
 
-  $(".rummi_tile").each(function (index, item) {
-    $(item).click(function () {
-      tile_on_click(this);
-    });
-  });
+  // $(".rummi_tile").each(function (index, item) {
+  //   $(item).click(function () {
+  //     tile_on_click(this);
+  //   });
+  // });
 
   $("#rulesBtn").click(function () {
     console.log("Rules Btn clicked.");

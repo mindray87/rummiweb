@@ -4,29 +4,50 @@ Vue.component('rummi-tile-element', {
          :id="id"
          :class="{ selected: selected }"
          v-on:click="select_tile"
-         >{{getTile}}</div>
+         ><span
+         v-if="tile != undefined"
+         v-bind:style="{ color: tile.tile.color }"
+         >{{tile.tile.number}}</span></div>
     `,
     props: ['id'],
     data: function () {
         return {
-            selected: false
+            selected: false,
         }
     },
     computed: {
-        getTile : function () {
-
-            let tile = store.getters.getTileById(this.id);
-            if (tile === undefined){
-                return " ";
-            }else {
-                return tile.tile.number;
-            }
+        tile: function () {
+            return store.getters.getTileById(this.id);
         }
     },
     methods: {
         select_tile: function (event) {
-            console.log("tile selected!");
-            this.selected = !this.selected;
+            if (store.state.selected_tile == undefined) {
+                if (this.tile != undefined) {
+                    store.state.selected_tile = this;
+                    this.selected = !this.selected;
+                }
+            } else if (store.state.selected_tile == this) {
+                store.state.selected_tile = undefined;
+                this.selected = !this.selected;
+            } else {
+
+                if (this.tile == undefined) {
+                    this.moveTile(store.state.selected_tile.id, this.id);
+                    console.log("moveTile " + store.state.selected_tile.id + "->" + this.id);
+                    store.state.selected_tile.selected = false;
+                    store.state.selected_tile = undefined;
+                } else {
+                    store.state.selected_tile.selected = false;
+                    store.state.selected_tile = this;
+                    this.selected = !this.selected;
+                }
+            }
+        },
+        moveTile : function (from, to) {
+            $.get("/moveTile/" + from + "->" + to, function () {
+                store.dispatch('reload');
+            })
         }
     }
 });
@@ -92,7 +113,7 @@ Vue.component('rummi-game-info', {
         </div>
 
         <div class="row">
-            <span id="selected_tile_label" class="invisible alert alert-primary mt-4"></span>
+            <span v-show="getSelectedTile != undefined" id="selected_tile_label" class="alert alert-primary mt-4">{{getSelectedTile}}</span>
         </div>
     </div>
 </div>`,
@@ -100,10 +121,13 @@ Vue.component('rummi-game-info', {
         playerName: function () {
             let player = this.$store.getters.activePlayer;
             return player.name;
+        },
+        getSelectedTile: function () {
+            return this.$store.getters.selectedTile;
         }
     },
     methods: {
-        command : function (command) {
+        command: function (command) {
             console.log("command: " + command);
             $.get("/command/" + command, function (data) {
                 store.dispatch('reload');
