@@ -48,9 +48,7 @@ Vue.component('rummi-tile-element', {
             }
         },
         moveTile: function (from, to) {
-            $.get("/moveTile/" + from + "->" + to, function () {
-                store.dispatch('reload');
-            })
+            $.get("/moveTile/" + from + "->" + to);
         }
     }
 });
@@ -124,10 +122,7 @@ Vue.component('rummi-game-info', {
     methods: {
         command: function (command) {
             console.log("command: " + command);
-            $.get("/command/" + command, function (data) {
-                store.dispatch('reload');
-            });
-
+            $.get("/command/" + command);
         }
     }
 });

@@ -1,5 +1,8 @@
 package controllers
 
+import akka.actor._
+import akka.stream.Materializer
+import de.htwg.se.rummi.controller._
 import javax.inject._
 import play.api.libs.json.Json
 import play.api.libs.streams.ActorFlow
@@ -51,16 +54,6 @@ class HomeController @Inject()(cc: ControllerComponents) (implicit system: Actor
     Ok(views.html.rules())
   }
 
-  implicit class RichResult (result: Result) {
-    def enableCors =  result.withHeaders(
-      "Access-Control-Allow-Origin" -> "*"
-      , "Access-Control-Allow-Methods" -> "OPTIONS, GET, POST, PUT, DELETE, HEAD"   // OPTIONS for pre-flight
-      , "Access-Control-Allow-Headers" -> "Accept, Content-Type, Origin, X-Json, X-Prototype-Version, X-Requested-With" //, "X-My-NonStd-Option"
-      , "Access-Control-Allow-Credentials" -> "true"
-    )
-  }
-}
-
   def socket = WebSocket.accept[String, String] { request =>
       ActorFlow.actorRef { out =>
         println("Connect receive")
@@ -95,5 +88,14 @@ class HomeController @Inject()(cc: ControllerComponents) (implicit system: Actor
       println("Received event from Controller")
       out ! (controller.save())
     }
+  }
+
+  implicit class RichResult (result: Result) {
+    def enableCors =  result.withHeaders(
+      "Access-Control-Allow-Origin" -> "*"
+      , "Access-Control-Allow-Methods" -> "OPTIONS, GET, POST, PUT, DELETE, HEAD"   // OPTIONS for pre-flight
+      , "Access-Control-Allow-Headers" -> "Accept, Content-Type, Origin, X-Json, X-Prototype-Version, X-Requested-With" //, "X-My-NonStd-Option"
+      , "Access-Control-Allow-Credentials" -> "true"
+    )
   }
 }

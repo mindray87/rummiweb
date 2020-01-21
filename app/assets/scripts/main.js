@@ -54,9 +54,35 @@ const store = new Vuex.Store({
 
 });
 
+connectWebSocket()
 
 new Vue({
     el: '#app',
     store,
     template: '<rummi-app></rummi-app>'
 });
+
+function connectWebSocket() {
+    var websocket = new WebSocket("ws://" + location.host + "/websocket");
+    websocket.setTimeout
+
+    websocket.onopen = function (event) {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        console.log("Websocket message received.")
+        if (typeof e.data === "string") {
+            let json = JSON.parse(e.data);
+            store.commit('getGameJson', json);
+        }
+    };
+}
