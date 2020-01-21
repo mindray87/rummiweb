@@ -134,10 +134,10 @@ Vue.component('rummi-game', {
         <div class="container">
         <div style="margin-bottom: 2em"></div>
             <div class="row">
-                <div class="col-md-4 mt-4">
+                <div class="col-md-4 col-sm-12 .col-md-12 mt-4">
                     <rummi-game-info></rummi-game-info>
                 </div>
-                <div class="col-md-8 mt-8">
+                <div class="col-md-8 col-sm-12 .col-md-12 mt-8">
                     <div class="game">
                     
                         <rummi-label-row 
