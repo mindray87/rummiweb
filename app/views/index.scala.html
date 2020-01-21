@@ -34,7 +34,11 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/vuex"></script>
 
-
+        <script>
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('@routes.Assets.versioned("scripts/service-worker.js")');
+                }
+        </script>
 
     </head>
     <body>

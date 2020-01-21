@@ -4,10 +4,13 @@ Vue.component('rummi-tile-element', {
          :id="id"
          :class="{ selected: selected }"
          v-on:click="select_tile"
-         ><span
+         ><div
          v-if="tile != undefined"
          v-bind:style="{ color: tile.tile.color }"
-         >{{tile.tile.number}}</span></div>
+         >
+         <span v-if="tile.tile.joker">⭐</span>
+         <span v-else>{{tile.tile.number}}</span>
+         </div></div>
     `,
     props: ['id'],
     data: function () {
