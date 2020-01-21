@@ -13,7 +13,7 @@
         <title>@title</title>
         <meta charset="utf-8">
 
-        <link rel="manifest" href="@routes.Assets.versioned("/manifest.json")">
+        <link rel="manifest" href="/manifest.json">
 
             <!-- Bootstrap CSS -->
         <link rel="stylesheet"
@@ -35,8 +35,11 @@
         <script src="https://unpkg.com/vuex"></script>
 
         <script>
+
                 if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('@routes.Assets.versioned("scripts/service-worker.js")');
+                    window.addEventListener('load', function() {
+                        navigator.serviceWorker.register("/service-worker.js");
+                    });
                 }
         </script>
 
