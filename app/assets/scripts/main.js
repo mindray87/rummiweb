@@ -10,16 +10,13 @@ const store = new Vuex.Store({
     getters: {
         activePlayer: state => state.game.players[state.game.activePlayerIndex],
         loaded: state => state.loaded,
-        selectedTile: state => state.selectedTile,
         getTileById: (state) => (id) => {
             let idComp = id.split("*");
             let col = idComp[0].charCodeAt(0) - 64;
             let row = idComp[1];
-            if (row < 8){
-                // in field
+            if (row < 8){ // in field
                 return state.game.field.tiles.find(t => t.y == col && t.x == row);
-            } else {
-                // in grid
+            } else { // in grid
                 row = row - 8;
                 return state.game.racks[state.game.activePlayerIndex].grid.tiles.find(t => t.y == col && t.x == row);
             }

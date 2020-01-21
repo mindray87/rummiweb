@@ -44,7 +44,7 @@ Vue.component('rummi-tile-element', {
                 }
             }
         },
-        moveTile : function (from, to) {
+        moveTile: function (from, to) {
             $.get("/moveTile/" + from + "->" + to, function () {
                 store.dispatch('reload');
             })
@@ -98,32 +98,24 @@ Vue.component('rummi-label-row', {
 
 Vue.component('rummi-game-info', {
     template: `
-    <div class="game-info">
-    <div class="col-md-4 mt-4">
-        <div class="row">
-            <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">{{playerName}}</span> ist playing right now.</div>
-        </div>
-
-        <div class="row">
-            <div class="btn-group">
-                <button v-on:click="command('sort')" id="sortBtn" class="btn btn-primary">> Sort</button>
-                <button id="drawBtn" class="btn btn-primary">> Draw</button>
-                <button id="finishBtn" class="btn btn-primary">> Finish</button>
+        <div>
+            <div class="row">
+                <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">{{playerName}}</span> ist playing right now.</div>
+            </div>
+    
+            <div class="row">
+                <div class="btn-group">
+                    <button v-on:click="command('sort')" class="btn btn-primary">> Sort</button>
+                    <button v-on:click="command('draw')" class="btn btn-primary">> Draw</button>
+                    <button v-on:click="command('finish')" class="btn btn-primary">> Finish</button>
+                </div>
             </div>
         </div>
-
-        <div class="row">
-            <span v-show="getSelectedTile != undefined" id="selected_tile_label" class="alert alert-primary mt-4">{{getSelectedTile}}</span>
-        </div>
-    </div>
-</div>`,
+`,
     computed: {
         playerName: function () {
             let player = this.$store.getters.activePlayer;
             return player.name;
-        },
-        getSelectedTile: function () {
-            return this.$store.getters.selectedTile;
         }
     },
     methods: {
@@ -140,9 +132,12 @@ Vue.component('rummi-game', {
     template:
         `<div id="home">
         <div class="container">
+        <div style="margin-bottom: 2em"></div>
             <div class="row">
-                <rummi-game-info></rummi-game-info>
-                <div class="col-md-8 mt-4">
+                <div class="col-md-4 mt-4">
+                    <rummi-game-info></rummi-game-info>
+                </div>
+                <div class="col-md-8 mt-8">
                     <div class="game">
                     
                         <rummi-label-row 
@@ -189,10 +184,10 @@ Vue.component('rummi-header', {
                 </h1>
                 <ul class="nav" nav-pills>
                     <li class="nav-item">
-                        <button id="gameBtn" class="btn btn-secondary mr-2" to="/">Game</button>
+                        <button v-on:click="$emit('switch-page', 'rummi-game')" class="btn btn-secondary mr-2">Game</button>
                     </li>
                     <li class="nav-item">
-                        <button id="rulesBtn" class="btn btn-secondary" to="/about">Rules</button>
+                        <button v-on:click="$emit('switch-page', 'rummi-rules')" class="btn btn-secondary" to="/about">Rules</button>
                         <!-- rules -->
                     </li>
                 </ul>
@@ -206,16 +201,28 @@ Vue.component('rummi-app', {
 
     template:
         `<div v-if="loaded">
-                <rummi-header></rummi-header>
-                <rummi-game></rummi-game>
+                <rummi-header
+                    v-on:switch-page="switch_page"
+                    ></rummi-header>
+                  <component
+                      v-bind:is="currentPage"
+                  ></component>
             </div>`,
+    data: function () {
+        return {
+            currentPage: 'rummi-game'
+        }
+    },
     computed: {
-        getPlayer: function () {
-            return this.$store.getters.activePlayer;
-        },
+
         loaded: function () {
             console.log("returning loading status: " + this.$store.getters.loaded);
             return this.$store.getters.loaded;
+        }
+    },
+    methods: {
+        switch_page: function (page) {
+            this.currentPage = page;
         }
     },
     created() {

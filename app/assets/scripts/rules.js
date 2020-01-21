@@ -1,5 +1,6 @@
-<template>
-    <div class="container">
+Vue.component('rummi-rules', {
+    template:
+        ` <div class="container">
         <div class="row">
             <h1 class="testcolor">Rummikub Rules</h1>
         </div>
@@ -184,4 +185,5 @@
             </div>
         </div>
     </div>
-</template>
+`
+});
