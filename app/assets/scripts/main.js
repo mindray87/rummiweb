@@ -54,7 +54,7 @@ const store = new Vuex.Store({
 
 });
 
-connectWebSocket()
+connectWebSocket();
 
 new Vue({
     el: '#app',
@@ -63,8 +63,8 @@ new Vue({
 });
 
 function connectWebSocket() {
-    var websocket = new WebSocket("wss://" + location.host + "/websocket");
-    websocket.setTimeout;
+    console.log("Executing connectWebSocket()");
+    let websocket = new WebSocket("wss://" + location.host + "/websocket");
 
     websocket.onopen = function (event) {
         console.log("Connected to Websocket");
@@ -79,7 +79,7 @@ function connectWebSocket() {
     };
 
     websocket.onmessage = function (e) {
-        console.log("Websocket message received.")
+        console.log("Websocket message received.");
         if (typeof e.data === "string") {
             let json = JSON.parse(e.data);
             store.commit('getGameJson', json);
