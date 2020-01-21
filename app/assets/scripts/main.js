@@ -63,12 +63,12 @@ new Vue({
 });
 
 function connectWebSocket() {
-    var websocket = new WebSocket("ws://" + location.host + "/websocket");
-    websocket.setTimeout
+    var websocket = new WebSocket("wss://" + location.host + "/websocket");
+    websocket.setTimeout;
 
     websocket.onopen = function (event) {
         console.log("Connected to Websocket");
-    }
+    };
 
     websocket.onclose = function () {
         console.log('Connection with Websocket Closed!');
