@@ -174,24 +174,26 @@ Vue.component('rummi-game', {
 Vue.component('rummi-header', {
 
     template:
-        `<header class="header">
-        <div id="nav">
-            <nav class="navbar navbar-dark bg-dark">
-                <h1 class="navbar-brand header1">Rummikub
-                    <small class="text-muted">by Julian Riegraf & Kira Koch</small>
-                </h1>
-                <ul class="nav" nav-pills>
-                    <li class="nav-item">
-                        <button v-on:click="$emit('switch-page', 'rummi-game')" class="btn btn-secondary mr-2">Game</button>
-                    </li>
-                    <li class="nav-item">
-                        <button v-on:click="$emit('switch-page', 'rummi-rules')" class="btn btn-secondary" to="/about">Rules</button>
-                        <!-- rules -->
-                    </li>
-                </ul>
-            </nav>
+        `
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  
+        <h1 class="navbar-brand header1" style="color: white">Rummikub
+            <small class="text-muted">by Julian Riegraf & Kira Koch</small>
+        </h1>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color: white"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <button v-on:click="$emit('switch-page', 'rummi-game')" class="btn btn-secondary mr-2">Game</button>    
+            <button v-on:click="$emit('switch-page', 'rummi-rules')" class="btn btn-secondary" to="/about">Rules</button>
         </div>
-    </header>`
+      </div>
+</nav>`
 });
 
 Vue.component('rummi-app', {
