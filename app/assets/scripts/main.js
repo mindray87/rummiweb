@@ -1,9 +1,9 @@
 Vue.config.productionTip = false;
 
-
 const store = new Vuex.Store({
     state: {
         game: {},
+        selectedTile: undefined,
         loaded: false
     },
     getters: {
@@ -13,11 +13,9 @@ const store = new Vuex.Store({
             let idComp = id.split("*");
             let col = idComp[0].charCodeAt(0) - 64;
             let row = idComp[1];
-            if (row < 8){
-                // in field
+            if (row < 8){ // in field
                 return state.game.field.tiles.find(t => t.y == col && t.x == row);
-            } else {
-                // in grid
+            } else { // in grid
                 row = row - 8;
                 return state.game.racks[state.game.activePlayerIndex].grid.tiles.find(t => t.y == col && t.x == row);
             }
@@ -26,8 +24,8 @@ const store = new Vuex.Store({
     },
     mutations: {
         getGameJson(state, data) {
+            console.log("state.game updated.");
             state.game = data;
-            console.log(JSON.stringify(state));
         },
         startLoading(state){
             state.loaded = false;
@@ -56,9 +54,35 @@ const store = new Vuex.Store({
 
 });
 
+connectWebSocket();
 
 new Vue({
     el: '#app',
     store,
     template: '<rummi-app></rummi-app>'
 });
+
+function connectWebSocket() {
+    console.log("Executing connectWebSocket()");
+    let websocket = new WebSocket("wss://" + location.host + "/websocket");
+
+    websocket.onopen = function (event) {
+        console.log("Connected to Websocket");
+    };
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        console.log("Websocket message received.");
+        if (typeof e.data === "string") {
+            let json = JSON.parse(e.data);
+            store.commit('getGameJson', json);
+        }
+    };
+}

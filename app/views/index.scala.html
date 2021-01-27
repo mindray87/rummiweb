@@ -13,6 +13,8 @@
         <title>@title</title>
         <meta charset="utf-8">
 
+        <link rel="manifest" href="/manifest.json">
+
             <!-- Bootstrap CSS -->
         <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -32,7 +34,14 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/vuex"></script>
 
+        <script>
 
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', function() {
+                        navigator.serviceWorker.register("/service-worker.js");
+                    });
+                }
+        </script>
 
     </head>
     <body>
@@ -40,6 +49,7 @@
     </body>
 
     <script src="@routes.Assets.versioned("scripts/Components.js")"></script>
+    <script src="@routes.Assets.versioned("scripts/rules.js")"></script>
     <script src="@routes.Assets.versioned("scripts/main.js")"></script>
     <script src="@routes.Assets.versioned("scripts/rummikub.js")"></script>
 </html>

@@ -1,0 +1,69 @@
+{
+  "name": "Rummikub",
+  "short_name": "Rummikub",
+  "start_url": "/index.html",
+  "display": "fullscreen",
+  "theme_color": "#0476F2",
+  "background_color": "transparent",
+  "lang": "English",
+  "icons": [
+    {
+      "src": "assets/icons/rummikup_icon_24x24.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_44x44.png",
+      "sizes": "44x44",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_50x50.png",
+      "sizes": "50x50",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_88x88.png",
+      "sizes": "88x88",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_150x150.png",
+      "sizes": "150x150",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },    {
+      "src": "assets/icons/rummikup_icon_1240x600.png",
+      "sizes": "1240x600",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/rummikup_icon_620x300.png",
+      "sizes": "620x300",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [],
+  "description": "Rummikub is a tile-based game for 2 to 4 players, combining elements of the card game rummy and mahjong. There are 104 number tiles in the game (valued 1 to 13 in four different colors, two copies of each) and two jokers. Players have 14 or 16 tiles initially and take turns putting down tiles from their racks into sets (groups or runs) of at least three, drawing a tile if they cannot play. In the Sabra version (the most common and popular), the first player to use all their tiles scores a positive score based on the total of the other players' hands, while the losers get negative scores. An important feature of the game is that players can work with the tiles that have already been played.",
+  "orientation": "landscape",
+  "generated": "undefined"
+}

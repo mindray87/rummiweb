@@ -4,29 +4,51 @@ Vue.component('rummi-tile-element', {
          :id="id"
          :class="{ selected: selected }"
          v-on:click="select_tile"
-         >{{getTile}}</div>
+         ><div
+         v-if="tile != undefined"
+         v-bind:style="{ color: tile.tile.color }"
+         >
+         <span v-if="tile.tile.joker">⭐</span>
+         <span v-else>{{tile.tile.number}}</span>
+         </div></div>
     `,
     props: ['id'],
     data: function () {
         return {
-            selected: false
+            selected: false,
         }
     },
     computed: {
-        getTile : function () {
-
-            let tile = store.getters.getTileById(this.id);
-            if (tile === undefined){
-                return " ";
-            }else {
-                return tile.tile.number;
-            }
+        tile: function () {
+            return store.getters.getTileById(this.id);
         }
     },
     methods: {
         select_tile: function (event) {
-            console.log("tile selected!");
-            this.selected = !this.selected;
+            if (store.state.selected_tile == undefined) {
+                if (this.tile != undefined) {
+                    store.state.selected_tile = this;
+                    this.selected = !this.selected;
+                }
+            } else if (store.state.selected_tile == this) {
+                store.state.selected_tile = undefined;
+                this.selected = !this.selected;
+            } else {
+
+                if (this.tile == undefined) {
+                    this.moveTile(store.state.selected_tile.id, this.id);
+                    console.log("moveTile " + store.state.selected_tile.id + "->" + this.id);
+                    store.state.selected_tile.selected = false;
+                    store.state.selected_tile = undefined;
+                } else {
+                    store.state.selected_tile.selected = false;
+                    store.state.selected_tile = this;
+                    this.selected = !this.selected;
+                }
+            }
+        },
+        moveTile: function (from, to) {
+            $.get("/moveTile/" + from + "->" + to);
         }
     }
 });
@@ -77,25 +99,20 @@ Vue.component('rummi-label-row', {
 
 Vue.component('rummi-game-info', {
     template: `
-    <div class="game-info">
-    <div class="col-md-4 mt-4">
-        <div class="row">
-            <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">{{playerName}}</span> ist playing right now.</div>
-        </div>
-
-        <div class="row">
-            <div class="btn-group">
-                <button v-on:click="command('sort')" id="sortBtn" class="btn btn-primary">> Sort</button>
-                <button id="drawBtn" class="btn btn-primary">> Draw</button>
-                <button id="finishBtn" class="btn btn-primary">> Finish</button>
+        <div>
+            <div class="row">
+                <div id="playerInfo" class="alert alert-primary"><span id="playerInfo">{{playerName}}</span> ist playing right now.</div>
+            </div>
+    
+            <div class="row">
+                <div class="btn-group">
+                    <button v-on:click="command('sort')" class="btn btn-primary">> Sort</button>
+                    <button v-on:click="command('draw')" class="btn btn-primary">> Draw</button>
+                    <button v-on:click="command('finish')" class="btn btn-primary">> Finish</button>
+                </div>
             </div>
         </div>
-
-        <div class="row">
-            <span id="selected_tile_label" class="invisible alert alert-primary mt-4"></span>
-        </div>
-    </div>
-</div>`,
+`,
     computed: {
         playerName: function () {
             let player = this.$store.getters.activePlayer;
@@ -103,12 +120,9 @@ Vue.component('rummi-game-info', {
         }
     },
     methods: {
-        command : function (command) {
+        command: function (command) {
             console.log("command: " + command);
-            $.get("/command/" + command, function (data) {
-                store.dispatch('reload');
-            });
-
+            $.get("/command/" + command);
         }
     }
 });
@@ -116,9 +130,12 @@ Vue.component('rummi-game', {
     template:
         `<div id="home">
         <div class="container">
+        <div style="margin-bottom: 2em"></div>
             <div class="row">
-                <rummi-game-info></rummi-game-info>
-                <div class="col-md-8 mt-4">
+                <div class="col-md-4 col-sm-12 .col-md-12 mt-4">
+                    <rummi-game-info></rummi-game-info>
+                </div>
+                <div class="col-md-8 col-sm-12 .col-md-12 mt-8">
                     <div class="game">
                     
                         <rummi-label-row 
@@ -157,24 +174,26 @@ Vue.component('rummi-game', {
 Vue.component('rummi-header', {
 
     template:
-        `<header class="header">
-        <div id="nav">
-            <nav class="navbar navbar-dark bg-dark">
-                <h1 class="navbar-brand header1">Rummikub
-                    <small class="text-muted">by Julian Riegraf & Kira Koch</small>
-                </h1>
-                <ul class="nav" nav-pills>
-                    <li class="nav-item">
-                        <button id="gameBtn" class="btn btn-secondary mr-2" to="/">Game</button>
-                    </li>
-                    <li class="nav-item">
-                        <button id="rulesBtn" class="btn btn-secondary" to="/about">Rules</button>
-                        <!-- rules -->
-                    </li>
-                </ul>
-            </nav>
+        `
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  
+        <h1 class="navbar-brand header1" style="color: white">Rummikub
+            <small class="text-muted">by Julian Riegraf & Kira Koch</small>
+        </h1>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color: white"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <button v-on:click="$emit('switch-page', 'rummi-game')" class="btn btn-secondary mr-2">Game</button>    
+            <button v-on:click="$emit('switch-page', 'rummi-rules')" class="btn btn-secondary" to="/about">Rules</button>
         </div>
-    </header>`
+      </div>
+</nav>`
 });
 
 Vue.component('rummi-app', {
@@ -182,16 +201,28 @@ Vue.component('rummi-app', {
 
     template:
         `<div v-if="loaded">
-                <rummi-header></rummi-header>
-                <rummi-game></rummi-game>
+                <rummi-header
+                    v-on:switch-page="switch_page"
+                    ></rummi-header>
+                  <component
+                      v-bind:is="currentPage"
+                  ></component>
             </div>`,
+    data: function () {
+        return {
+            currentPage: 'rummi-game'
+        }
+    },
     computed: {
-        getPlayer: function () {
-            return this.$store.getters.activePlayer;
-        },
+
         loaded: function () {
             console.log("returning loading status: " + this.$store.getters.loaded);
             return this.$store.getters.loaded;
+        }
+    },
+    methods: {
+        switch_page: function (page) {
+            this.currentPage = page;
         }
     },
     created() {
