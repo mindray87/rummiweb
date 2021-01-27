@@ -17,7 +17,7 @@ import scala.swing.Reactor
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) (implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
-  val controller = new de.htwg.se.rummi.controller.Controller("Julian" :: "Kira" :: Nil)
+  val controller = new de.htwg.se.rummi.controller.Controller("Carolin" :: "Patrick" :: Nil)
   controller.initGame()
 
   def moveTile(command: String) = Action {
